@@ -60,8 +60,9 @@
   .card-evt span{background:#D7141A;color:#fff;font-size:12px;padding:2px 8px;border-radius:999px}
   .notes .red{color:#D7141A;font-weight:800}
   @media (max-width:720px){
-    .event-bar .wrap{height:auto;padding-top:8px;padding-bottom:8px;font-size:15px;gap:8px;flex-wrap:wrap}
-    .ev-sub{display:none}
+    .event-bar .wrap{height:auto;padding:7px 10px;font-size:14px;gap:4px 8px;flex-wrap:wrap;text-align:center}
+    .ev-tag{font-size:11px;padding:3px 8px}
+    .ev-sub{display:block;width:100%;font-size:12px;opacity:.95}
   }
 
   /* nav */
@@ -164,7 +165,10 @@
   @media (max-width:720px){
     .photo-art{height:auto!important;aspect-ratio:auto!important}
     .photo-art .photo-card{position:relative;width:100%;height:260px;-webkit-mask-image:none;mask-image:none;border-radius:20px}
-    .photo-badge{position:absolute;left:12px;right:auto;bottom:12px;padding:8px 12px 8px 8px}
+    .photo-badge{position:absolute;left:10px;right:auto;top:auto;bottom:10px;padding:6px 10px 6px 6px;gap:8px}
+    .photo-badge .pb-ic{width:28px;height:28px}
+    .photo-badge .pb-ic .ico{width:15px;height:15px}
+    .photo-badge small{font-size:10px}
     .photo-badge b{font-size:14px}
   }
 
@@ -364,12 +368,14 @@
   .qmenu .q5{background:#1E293B;font-size:14px;padding:10px 6px}
   .qmenu .q5 .ico{width:18px;height:18px;fill:#fff;stroke:none}
   @media (max-width:720px){
-    .qmenu{right:8px;width:74px;border-radius:20px;top:auto;bottom:16px;transform:none}
-    .qmenu a{font-size:12px;padding:10px 4px}
-    .qmenu .ico{width:22px;height:22px}
-    .qmenu .q1 b{font-size:12px}
-    .qmenu .q2 b{font-size:11px}
-    .qmenu .q4 .tk{width:26px;height:26px;font-size:8px}
+    .qmenu{right:6px;width:60px;border-radius:16px;top:auto;bottom:14px;transform:none}
+    .qmenu .q2,.qmenu .q3{display:none}   /* 모바일: 책임배차·문자상담 숨김 */
+    .qmenu a{font-size:11px;padding:8px 2px;gap:2px}
+    .qmenu .ico{width:18px;height:18px}
+    .qmenu .q1 b{font-size:10px}
+    .qmenu .q4 .tk{width:22px;height:22px;font-size:7px}
+    .qmenu .q5{padding:6px 2px;font-size:11px}
+    .qmenu .q5 .ico{width:14px;height:14px}
   }
   .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:10px;font-size:15px;opacity:0;pointer-events:none;transition:.25s;z-index:100}
   .toast.show{opacity:1;transform:translateX(-50%)}
@@ -453,6 +459,30 @@
     .about-txt h3,.biz h2{font-size:27px}
     .dispatch-cta a{font-size:20px}
     .faq .a{padding-left:22px}
+  }
+
+  /* ===== 모바일: 메인 슬라이드 축소 ===== */
+  @media (max-width:720px){
+    .hero > .hgrid{padding-top:18px;gap:16px}
+    .copy{padding-top:0}
+    .sl-tag{font-size:12px;padding:4px 10px;margin-bottom:8px}
+    .copy .ht{font-size:27px;line-height:1.2}
+    .swoosh{width:160px;height:16px;margin:2px 0 10px}
+    .copy p{font-size:15px;line-height:1.5}
+    .ticks{margin-top:12px;gap:6px}
+    .ticks span{font-size:13px;padding:5px 10px 5px 6px;gap:6px}
+    .ticks i{width:20px;height:20px}
+    .ticks i .ico{width:12px;height:12px}
+    .art{aspect-ratio:520/300;max-width:250px;margin:4px auto 0}
+    .art .scene{max-width:250px;margin:0 auto;display:block}
+    .photo-art{max-width:none}
+    .photo-art .photo-card{height:150px}
+    .sl-tabs{margin-top:4px}
+    .sl-tab{font-size:12px;padding:7px 10px}
+    /* 모바일에서 메인 바로 아래로 옮긴 상담접수 */
+    .hgrid > #live{padding:0!important;grid-column:1/-1}
+    .hgrid > #live .wrap{padding:0}
+    .hgrid > #live .board{margin:0}
   }
 </style>
 </head>
@@ -1087,13 +1117,14 @@
   let lastSig = null;
 
   // 목록 자동 롤링: 한 줄씩 위로 계속 올라감 (마우스를 올리면 멈춤)
-  const ROLL_VISIBLE = 5;      // 한 번에 보이는 줄 수
+  const ROLL_VISIBLE_PC = 5, ROLL_VISIBLE_MOBILE = 3;   // 한 번에 보이는 줄 수 (PC / 모바일)
   const ROLL_MS = 2500;        // 한 줄 넘어가는 간격(밀리초)
   let rollTimer = null, rollPaused = false;
   function startRoll() {
     clearInterval(rollTimer);
     rowsEl.classList.remove('rolling'); rowsEl.style.height = '';
     const rows = [...rowsEl.querySelectorAll('.bd-row')];
+    const ROLL_VISIBLE = matchMedia('(max-width:720px)').matches ? ROLL_VISIBLE_MOBILE : ROLL_VISIBLE_PC;
     if (rows.length <= ROLL_VISIBLE || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     rowsEl.classList.add('rolling');
     const fit = () => { rowsEl.style.height = [...rowsEl.children].slice(0, ROLL_VISIBLE).reduce((h, r) => h + r.offsetHeight, 0) + 'px'; };
@@ -1186,6 +1217,22 @@
     img.onerror = () => img.classList.add('err');
     img.src = `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=900`;
   });
+
+
+  // 모바일: 실시간 상담접수를 메인 슬라이드 바로 아래로 이동 (PC에서는 원래 자리)
+  (() => {
+    const live = document.getElementById('live'), stage = document.getElementById('heroSlider');
+    if (!live || !stage) return;
+    const home = document.createComment('live-home'); live.parentNode.insertBefore(home, live);
+    const mq = matchMedia('(max-width:720px)');
+    const place = () => {
+      if (mq.matches) { if (live.parentNode !== stage.parentNode) stage.after(live); }
+      else if (live.previousSibling !== home) home.after(live);
+      if (typeof startRoll === 'function') startRoll();
+    };
+    (mq.addEventListener ? mq.addEventListener('change', place) : mq.addListener(place));
+    place();
+  })();
 
   // ===== 메인 슬라이드 =====
   (() => {
