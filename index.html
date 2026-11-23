@@ -502,6 +502,24 @@
   .cc.m i .ico{animation:telShake 1.8s ease-in-out infinite .9s}
   .cc.k i .ico{animation:none}
   @media (prefers-reduced-motion:reduce){.hd-tel i,.hd-tel i .ico,.qmenu .q1 .ico,.cc i,.cc i .ico,.dispatch-cta a .ico,.about-txt .tel .ico{animation:none!important}}
+
+/* PC 양쪽 여백 꾸미기 */
+@media(min-width:1100px){
+body{background:#eef2f8}
+.hero{background:linear-gradient(120deg,#0b2a7a 0%,#1f4fd6 55%,#3a7bff 100%)!important}
+.hero:before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(600px 300px at 10% 20%,rgba(255,255,255,.12),transparent 60%),radial-gradient(500px 260px at 92% 80%,rgba(255,225,77,.18),transparent 60%)}
+.hero .hgrid{position:relative;background:#fff;border-radius:18px;box-shadow:0 24px 60px rgba(0,10,40,.45)}
+}
+.sideL{display:none}
+@media(min-width:1500px){
+.sideL{display:block;position:fixed;left:18px;top:50%;transform:translateY(-50%);width:120px;z-index:50;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 10px 30px rgba(0,20,60,.18);text-align:center}
+.sideL .t{background:#e53935;color:#fff;padding:10px 6px;font-weight:800;font-size:13px;line-height:1.4}
+.sideL .t b{display:block;font-size:11px;letter-spacing:2px;opacity:.9}
+.sideL .p{padding:10px 6px;border-bottom:1px solid #eef;font-size:12px;color:#333;line-height:1.4}
+.sideL .p strong{display:block;color:#1f4fd6;font-size:15px}
+.sideL .h{background:#1f4fd6;color:#fff;padding:10px 6px;font-weight:800;font-size:13px;line-height:1.4}
+.sideL .h a{color:#ffe14d;display:block;font-size:14px;text-decoration:none;margin-top:3px}
+}
 </style>
 </head>
 <body>
@@ -1293,5 +1311,6 @@
     location.href = smsLink(body);
   });
 </script>
+<aside class="sideL"><div class="t"><b>EVENT</b>신용카드 환영!<br>현금과 동일</div><div class="p">오토바이 퀵<strong>1만2천원~</strong></div><div class="p">다마스<strong>2만5천원~</strong></div><div class="p">1톤 용달<strong>4만원~</strong></div><div class="h">24시간<br>배차상담<a href="tel:16002456">1600-2456</a></div></aside>
 </body>
 </html>
